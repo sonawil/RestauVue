@@ -29,6 +29,7 @@ const { getListUtilisateur, supprimerUtilisateur } = useUtilisateur()
 
 onBeforeMount(() => {
     getListUtilisateur().then(data => {
+        
         Utilisateurs.value = data
         console.log('donnee', data)
 

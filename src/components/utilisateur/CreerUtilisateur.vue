@@ -57,8 +57,9 @@ const errors = ref({
 });
 
 const soumettre = () => {
+  console.log("utilisateur",utilisateur.value)
   // Ne pas soumettre le formulaire si tous les champs ne sont pas valides
-  if (!valider(utilisateur.value)) return;
+  //if (!valider(utilisateur.value)) return;
 
   ajouterUtilisateur(utilisateur.value)
     .then(() => {
@@ -81,6 +82,50 @@ const soumettre = () => {
     });
 };
 
+// Regex utilisées dans la validation -- on peut aussi utiliser des simples if else
+const mdpRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/;
+const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+const nomRegex = /^[a-zA-Z]{4,}$/;
+
+// Fonction pour vérifier que tout le formulaire est valide
+const valider = (utilisateur) => {
+  // Validation de chaque champ pour afficher le bon message en cas d'erreur
+  for (let champ in utilisateur) {
+    validerChamp(champ, utilisateur);
+  }
+
+  if (
+    !mdpRegex.test(utilisateur.mot_de_passe) ||
+    !emailRegex.test(utilisateur.email) ||
+    !nomRegex.test(utilisateur.nom) ||
+    !nomRegex.test(utilisateur.prenom) ||
+    !isNaN(new Date(utilisateur.naissance))
+  )
+    return false;
+  return true;
+};
+
+// Fonction utiliser pour valider un champ donné
+const validerChamp = (champ, utilisateur) => {
+  switch (champ) {
+    case 'nom':
+    case 'prenom':
+      if (!nomRegex.test(utilisateur[champ])) {
+        errors.value[champ] = `${champ} est invalide!`;
+      }
+      break;
+    case 'mot_de_passe':
+      if (!mdpRegex.test(utilisateur[champ])) {
+        errors.value[champ] = `Le mot de passe est invalide!`;
+      }
+      break;
+    case 'email':
+      if (!emailRegex.test(utilisateur[champ])) {
+        errors.value[champ] = `L'email est invalide!`;
+      }
+      break;
+  }
+};
 
 
 </script>
