@@ -15,7 +15,7 @@
         <td>
             <button @click="allerADetail" class="btn btn-primary">Details</button>
             <button @click="allerAEditer" class="btn btn-success">Editer</button>
-            <button @click="gererSuppression" class="btn btn-danger">Supprimer</button>
+            <button @click="gererSuppression" class="btn btn-danger">Supprimerr</button>
         </td>
     </tr>
 </template>
